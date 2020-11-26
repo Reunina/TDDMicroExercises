@@ -1,3 +1,13 @@
 = Katas Refactoring legacy code driven by tests - Coding Dojo
 
 From https://github.com/lucaminudel/TDDwithMockObjectsAndDesignPrinciples/tree/master/TDDMicroExercises[lucaminudel's repository].
+
+
+== CI ( with github ) 
+
+ci files must be defined in the '.github' folder. 
+
+Defined steps: :: 
+* lint with lake8
+* run unit tests
+
