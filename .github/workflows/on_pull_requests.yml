@@ -18,10 +18,12 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -Iv pylint==2.5.3
-    - name: Analysing the code with pylint
+        pip install -Iv flake8==3.8.3
+    - name: Lint python files with flake8
       run: |
-        pylint `ls -R|grep .py$|xargs`
+        $(which flake8) --version    # pour se prémunir de ne pas trouver l'exécutable si non dans le PATH
+        $(which flake8) --exclude=test_*.py
+        $(which flake8) test_*.py
 
   unit_tests:
 
