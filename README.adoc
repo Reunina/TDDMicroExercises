@@ -1,0 +1,3 @@
+= Katas Refactoring legacy code driven by tests - Coding Dojo
+
+From https://github.com/lucaminudel/TDDwithMockObjectsAndDesignPrinciples/tree/master/TDDMicroExercises[lucaminudel's repository].
