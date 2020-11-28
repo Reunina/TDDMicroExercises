@@ -21,6 +21,12 @@ class AlarmTest(unittest.TestCase):
         alarm.set_alarm_if_pressure_is_not_authorized(valid_pressure)
         self.assertTrue(alarm.is_alarm_on)
 
+    def test_alarm_is_set_when_pressure_is_in_too_high(self):
+        alarm = Alarm()
+        valid_pressure = self.generate_too_high_pressure_for_alarm(alarm)
+        alarm.set_alarm_if_pressure_is_not_authorized(valid_pressure)
+        self.assertTrue(alarm.is_alarm_on)
+
     def generate_authorized_pressure_for_alarm(self, alarm):
         return random.uniform(
             alarm.low_pressure_threshold, alarm.high_pressure_threshold)
@@ -29,6 +35,12 @@ class AlarmTest(unittest.TestCase):
         return random.uniform(
             alarm.low_pressure_threshold - alarm.low_pressure_threshold,
             alarm.low_pressure_threshold)
+
+    def generate_too_high_pressure_for_alarm(self, alarm):
+        return random.uniform(
+            alarm.high_pressure_threshold,
+            alarm.high_pressure_threshold + alarm.high_pressure_threshold)
+
 
 if __name__ == "__main__":
     unittest.main()

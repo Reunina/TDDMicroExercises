@@ -47,7 +47,7 @@ class Alarm(object):
     @property
     def low_pressure_threshold(self):
         return self._low_pressure_threshold
-    
+
     @property
     def high_pressure_threshold(self):
         return self._high_pressure_threshold
