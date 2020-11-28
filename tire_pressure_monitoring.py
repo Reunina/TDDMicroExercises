@@ -33,6 +33,9 @@ class Alarm(object):
 
     def check(self):
         psi_pressure_value = self._sensor.pop_next_pressure_psi_value()
+        self.set_alarm_if_pressure_is_not_authorized(psi_pressure_value)
+
+    def set_alarm_if_pressure_is_not_authorized(self, psi_pressure_value):
         if (psi_pressure_value < self._low_pressure_threshold or
                 self._high_pressure_threshold < psi_pressure_value):
             self._is_alarm_on = True
@@ -40,3 +43,11 @@ class Alarm(object):
     @property
     def is_alarm_on(self):
         return self._is_alarm_on
+
+    @property
+    def low_pressure_threshold(self):
+        return self._low_pressure_threshold
+    
+    @property
+    def high_pressure_threshold(self):
+        return self._high_pressure_threshold
