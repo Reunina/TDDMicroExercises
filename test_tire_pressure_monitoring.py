@@ -4,10 +4,9 @@ from tire_pressure_monitoring import Alarm
 
 
 class AlarmTest(unittest.TestCase):
-    def test_do_something(self):
+    def test_arlam_is_off_at_initialization(self):
         alarm = Alarm()
-        alarm.check()
-        alarm.is_alarm_on
+        self.assertFalse(alarm.is_alarm_on)
 
 
 if __name__ == "__main__":
