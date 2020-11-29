@@ -62,6 +62,12 @@ class Alarm(object):
     def is_using_sensor(self, sensor):
         return self._sensor == sensor
 
+    def set_pressure_validator(self, validator):
+        self._pressure_validator = validator
+
+    def is_using_pressure_validator(self, validator):
+        return self._pressure_validator == validator
+
     @property
     def is_alarm_on(self):
         return self._is_alarm_on

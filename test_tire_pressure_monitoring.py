@@ -1,7 +1,8 @@
 import unittest
 import random
 
-from tire_pressure_monitoring import Alarm, Sensor, TirePressureValidator
+from tire_pressure_monitoring import Alarm, Sensor, TirePressureValidator,\
+    PressureValidator
 
 
 class AlarmTest(unittest.TestCase):
@@ -43,14 +44,30 @@ class AlarmTest(unittest.TestCase):
 
     def test_pairing_with_another_sensor_is_possible(self):
         alarm = Alarm()
-        test_sensor = DummySensor()
+        test_sensor = DummySensor(0)
         self.assertFalse(alarm.is_using_sensor(test_sensor))
         alarm.pair_with(test_sensor)
         self.assertTrue(alarm.is_using_sensor(test_sensor))
 
+    def test_using_another_pressure_validator_is_possible(self):
+        alarm = Alarm()
+        test_pressure_validator = DummyPressureValidator()
+        self.assertFalse(
+            alarm.is_using_pressure_validator(test_pressure_validator))
+        alarm.set_pressure_validator(test_pressure_validator)
+        self.assertTrue(alarm.is_using_pressure_validator(test_pressure_validator))
+
+
+class DummyPressureValidator(PressureValidator):
+    pass
+
 
 class DummySensor(Sensor):
-    pass
+    def __init__(self, pressure):
+        self._pressure = pressure
+
+    def pop_next_pressure_psi_value(self):
+        return self._pressure
 
 
 class TirePressureValidatorTest(unittest.TestCase):
