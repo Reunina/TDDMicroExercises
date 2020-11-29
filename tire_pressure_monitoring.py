@@ -20,14 +20,31 @@ class Sensor(object):
         return pressure_telemetry_value
 
 
+class PressureValidator:
+    def check(self, psi_pressure_value: float) -> bool:
+        pass
+
+
+class TirePressureValidator(PressureValidator):
+    """
+    A Pressure validator for Tires
+    """
+    def __init__(self):
+        self._low_pressure_threshold = 17.0
+        self._high_pressure_threshold = 21.0
+
+    def check(self, psi_pressure_value):
+        return self._low_pressure_threshold < psi_pressure_value and\
+               psi_pressure_value < self._high_pressure_threshold
+
+
 class Alarm(object):
     """
     Alarm that goes on when presure is not on the expected range
     needs a Sensor
     """
     def __init__(self):
-        self._low_pressure_threshold = 17.0
-        self._high_pressure_threshold = 21.0
+        self._pressure_validator = TirePressureValidator()
         self._sensor = Sensor()
         self._is_alarm_on = False
 
@@ -36,8 +53,7 @@ class Alarm(object):
         self.set_alarm_if_pressure_is_not_authorized(psi_pressure_value)
 
     def set_alarm_if_pressure_is_not_authorized(self, psi_pressure_value):
-        if (psi_pressure_value < self._low_pressure_threshold or
-                self._high_pressure_threshold < psi_pressure_value):
+        if (not self._pressure_validator.check(float(psi_pressure_value))):
             self._is_alarm_on = True
 
     @property
@@ -46,8 +62,8 @@ class Alarm(object):
 
     @property
     def low_pressure_threshold(self):
-        return self._low_pressure_threshold
+        return self._pressure_validator._low_pressure_threshold
 
     @property
     def high_pressure_threshold(self):
-        return self._high_pressure_threshold
+        return self._pressure_validator._high_pressure_threshold
