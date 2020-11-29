@@ -1,7 +1,7 @@
 import unittest
 import random
 
-from tire_pressure_monitoring import Alarm, TirePressureValidator
+from tire_pressure_monitoring import Alarm, Sensor, TirePressureValidator
 
 
 class AlarmTest(unittest.TestCase):
@@ -40,6 +40,17 @@ class AlarmTest(unittest.TestCase):
         return random.uniform(
             alarm.high_pressure_threshold,
             alarm.high_pressure_threshold + alarm.high_pressure_threshold)
+
+    def test_pairing_with_another_sensor_is_possible(self):
+        alarm = Alarm()
+        test_sensor = DummySensor()
+        self.assertFalse(alarm.is_using_sensor(test_sensor))
+        alarm.pair_with(test_sensor)
+        self.assertTrue(alarm.is_using_sensor(test_sensor))
+
+
+class DummySensor(Sensor):
+    pass
 
 
 class TirePressureValidatorTest(unittest.TestCase):

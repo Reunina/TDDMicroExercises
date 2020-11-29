@@ -56,6 +56,12 @@ class Alarm(object):
         if (not self._pressure_validator.check(float(psi_pressure_value))):
             self._is_alarm_on = True
 
+    def pair_with(self, new_sensor):
+        self._sensor = new_sensor
+
+    def is_using_sensor(self, sensor):
+        return self._sensor == sensor
+
     @property
     def is_alarm_on(self):
         return self._is_alarm_on
