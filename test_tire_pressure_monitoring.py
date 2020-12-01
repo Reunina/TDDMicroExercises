@@ -6,26 +6,29 @@ from tire_pressure_monitoring import Alarm, Sensor, TirePressureValidator,\
 
 
 class AlarmTest(unittest.TestCase):
-    def test_arlam_is_off_at_initialization(self):
+    def test_alarm_is_off_at_initialization(self):
         alarm = Alarm()
         self.assertFalse(alarm.is_alarm_on)
 
     def test_alarm_stays_off_when_pressure_is_in_authorized_range(self):
         alarm = Alarm()
         valid_pressure = self.generate_authorized_pressure_for_alarm(alarm)
-        alarm.set_alarm_if_pressure_is_not_authorized(valid_pressure)
+        alarm.pair_with(DummySensor(valid_pressure))
+        alarm.check()
         self.assertFalse(alarm.is_alarm_on)
 
     def test_alarm_is_set_when_pressure_is_in_too_low(self):
         alarm = Alarm()
-        valid_pressure = self.generate_too_low_pressure_for_alarm(alarm)
-        alarm.set_alarm_if_pressure_is_not_authorized(valid_pressure)
+        unvalid_pressure = self.generate_too_low_pressure_for_alarm(alarm)
+        alarm.pair_with(DummySensor(unvalid_pressure))
+        alarm.check()
         self.assertTrue(alarm.is_alarm_on)
 
     def test_alarm_is_set_when_pressure_is_in_too_high(self):
         alarm = Alarm()
-        valid_pressure = self.generate_too_high_pressure_for_alarm(alarm)
-        alarm.set_alarm_if_pressure_is_not_authorized(valid_pressure)
+        unvalid_pressure = self.generate_too_high_pressure_for_alarm(alarm)
+        alarm.pair_with(DummySensor(unvalid_pressure))
+        alarm.check()
         self.assertTrue(alarm.is_alarm_on)
 
     def generate_authorized_pressure_for_alarm(self, alarm):
@@ -55,7 +58,8 @@ class AlarmTest(unittest.TestCase):
         self.assertFalse(
             alarm.is_using_pressure_validator(test_pressure_validator))
         alarm.set_pressure_validator(test_pressure_validator)
-        self.assertTrue(alarm.is_using_pressure_validator(test_pressure_validator))
+        self.assertTrue(
+            alarm.is_using_pressure_validator(test_pressure_validator))
 
 
 class DummyPressureValidator(PressureValidator):
