@@ -1,8 +1,24 @@
 import unittest
 import random
 
-from tire_pressure_monitoring import Alarm, Sensor, TirePressureValidator,\
-    PressureValidator
+from tire_pressure_monitoring import Alarm, SimpleAlarm, Sensor,\
+    TirePressureValidator, PressureValidator
+
+
+class SimpleAlarmTest(unittest.TestCase):
+    def test_alarm_is_off_at_initialization(self):
+        alarm = SimpleAlarm(DummyPressureValidator(), DummySensor(1.0))
+        self.assertFalse(alarm.is_alarm_on)
+
+    def test_alarm_stays_off_when_pressure_is_valid(self):
+        alarm = SimpleAlarm(DummyPressureValidator(), DummySensor(1.0))
+        alarm.check()
+        self.assertFalse(alarm.is_alarm_on)
+
+    def test_alarm_is_set_when_pressure_is_not_valid(self):
+        alarm = SimpleAlarm(DummyPressureValidator(), DummySensor(0.0))
+        alarm.check()
+        self.assertTrue(alarm.is_alarm_on)
 
 
 class AlarmTest(unittest.TestCase):
@@ -63,7 +79,8 @@ class AlarmTest(unittest.TestCase):
 
 
 class DummyPressureValidator(PressureValidator):
-    pass
+    def check(self, psi_pressure_value):
+        return psi_pressure_value == 1.0
 
 
 class DummySensor(Sensor):
