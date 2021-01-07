@@ -46,3 +46,11 @@ class HtmlLineConverter(LineConverter):
     @staticmethod
     def strip_line(line):
         return line.rstrip()
+
+    @staticmethod
+    def escape_line(line):
+        return html_converter.escape(line, quote=True)
+
+    @staticmethod
+    def convert_to_html_line(line):
+        return line + "<br />"
